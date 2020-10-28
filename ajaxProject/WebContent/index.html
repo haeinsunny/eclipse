@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+div#result {
+	display: inline-block;
+	width: 200px;
+	border: 2px solid orange;
+}
+
+div#detail {
+	position: absolute;
+	right: 0;
+	display: inline-block;
+	width: 250px;
+	border: 2px solid orange;
+	padding: 0px 0px 10px 10px;
+}
+</style>
+</head>
+<body>
+	<h1>Hello, 김해인입니다.</h1>
+	<div id="result"></div>
+	<div id="detail">
+		<p>상세정보</p>
+		<label for="id">Id:</label> 
+		<input type="text" name="id" id="eid" value='100' value='100'><br> 
+		
+		<label for="firstName">firstName:</label>
+		<input type="text" name="firstName" id="fName" value='100'><br> 
+		
+		<label for="lastName">lastName:</label> 
+		<input type="text" name="lastName" id="lName" value='100'><br> 
+			
+		<label for="Email">Email:</label> 
+		<input type="text" name="Email" id="email" value='100'><br> 
+			
+		<label for="Salary">Salary:</label> 
+		<input type="text" name="Salary" id="salary" value='100'><br>
+		
+		<label for="job">Job:</label> 
+		<input type="text" name="Job" id="job" value='100'><br>
+	</div>
+	
+	<script>
+		let xhtp = new XMLHttpRequest(); //비동기방식 페이지를 만들고나서 적용할거 생각하기
+		xhtp.onreadystatechange = function() {
+			if (xhtp.readyState == 4 && xhtp.status == 200) { //페이지 ajax 호출
+				//console.log(xhtp.responseText);
+				let data = JSON.parse(xhtp.responseText);
+				console.log(data);
+
+				let tag = "<ul>";
+				for (let i = 0; i < data.length; i++) { //페이지를 만들어주는 부분
+					tag += "<li id=" + data[i].id + ">"+ data[i].id +", <a href='empinfo.jsp?id="
+							+ data[i].id + "' >" + data[i].firstName
+							+ "</a></li>";
+				}
+				tag += "</ul>";
+				
+				document.getElementById("result").innerHTML = tag;
+
+				mouseOverFunc(); //페이지에 적용할 스타일 함수 넣기
+			}// end of if
+
+		}// end of onreadystatechange
+		xhtp.open('get', 'GetEmployeesListServlet'); //servlet을 불러와서 HTML을 실행시키겠다
+		xhtp.send();
+
+		//mouseover 이벤트 적용
+		function mouseOverFunc() {
+			let lis = document.getElementsByTagName('li');
+			for (let i = 0; i < lis.length; i++) {
+				lis[i].onmouseover = function() {
+					console.log(this.id);
+					this.style.background = 'orange';
+					
+					//한건 조회하는 ajax 호출
+					getEmpInfo(this.id);//함수호출
+
+				}
+				lis[i].onmouseout = function() {
+					this.style.background = '';
+				}
+			}
+		}
+			function getEmpInfo(empId){   //한건 조회하는 함수
+				let xhtp = new XMLHttpRequest();
+				xhtp.onreadystatechange = function(){
+					if(xhtp.readyState == 4 && xhtp.status == 200){
+					console.log(xhtp.response);
+					let data = xhtp.response;
+					document.getElementById('eid').value = data.id;
+					document.getElementById('fName').value = data.firstName;
+					document.getElementById('lName').value = data.lastName;
+					document.getElementById('email').value = data.email;
+					document.getElementById('salary').value = data.salary;
+					document.getElementById('job').value = data.jobId;
+					}
+				}
+				xhtp.responseType = 'json';
+				xhtp.open('get', 'GetEmpInfoServlet?id='+empId); 
+				//GetEmpInfoSservlet의 파라미터 (id)값으로 넘겨줌
+				//매개값이 empid이면 GetEmpInfoServlet에서도 getParameter("empid")로 받아야함
+				xhtp.send();
+			}
+	</script>
+</body>
+</html>
+
+
+
+
+

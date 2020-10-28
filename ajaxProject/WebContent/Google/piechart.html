@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Google/piechart.html</title>
+<script type="text/javascript"
+	src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+	let resultAry = [   //3
+		['Dept', 'Members Dept']   //적절한 타이틀을 넣어줘야 함
+	]; 
+	let xhtp = new XMLHttpRequest();
+	xhtp.onreadystatechange = function() { //5
+		if (xhtp.readyState == 4 && xhtp.status == 200) {
+			let data = xhtp.response;
+			for (let i = 0; i < data.length; i++) {
+				let iAry = [];
+				for (field in data[i]) {
+					iAry.push(field);  //iAry의 배열에 추가
+					iAry.push(data[i][field]);  //iAry배열의 필드[값] 추가		
+				}
+				resultAry.push(iAry);
+			}
+			console.log(resultAry);
+		}
+	}
+
+	xhtp.open('get', '../GetMemberPerDeptServ'); //4 piechart기준으로 한단계 위에있으므로 경로 맞춰주기
+	xhtp.send();
+	xhtp.responseType = 'json';
+
+	google.charts.load('current', {
+		'packages' : [ 'corechart' ]
+	});
+	google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+		var temp = [ //1 구조 새로만들기
+		[ 'Task', 'Hours per Day' ], [ '로동', 11 ], [ '식사', 2 ], [ '커뮤트', 2 ],
+				[ 'TV보기', 2 ], [ '꿈나라', 7 ] ];
+		temp = resultAry;  //6 temp에 resultAry값을 넣겠다
+
+		var data = google.visualization.arrayToDataTable(temp); //2 매개값으로 temp넣기
+
+		var options = {
+			title : '부서별 로동자 수'
+		};
+
+		var chart = new google.visualization.PieChart(document
+				.getElementById('piechart')); //div영역 찾아와라
+
+		chart.draw(data, options);
+	}
+</script>
+</head>
+<body>
+	<div id="piechart" style="width: 900px; height: 500px;"></div>
+</body>
+</html>
