@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>public/jquery_event.html</title>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+                    for (let i = 0; i < 5; i++) {
+                        // $('#show').append($('<button />').html('OK'));  //얘를 밑에처럼 풀어쓸수있음
+                        let btn = $('<button />').html('OK');
+                        $('#show').append(btn);
+                    }
+                    $('button').eq(0).click(function () { //첫번재 요소만 적용하겠다
+                        window.alert('button clicked.');
+                    })
+                    $('button').on('mouseover', function () {
+                        $(this).css('background', 'orange');
+                    })
+                    $('button').on('mouseout', function () {
+                        $(this).css('background', '');
+                    })
+
+                    $('button').on({
+                                'focus': function () {
+                                    console.log('focus')
+                                }, //버튼마다 포커스(테두리)주는것
+                                'blur': function () {
+                                    console.log('blur')
+                                }
+                            }
+
+                            // $(document).ready(function(){  //페이지를모두 연 다음에 함수실행시키려고 
+                            //     $('#show').html('hello');   //이렇게하면 script를 굳이 body안에 적을필요 없음
+                            // });
+
+                            // $(document).ready(callback); //이런식으로도 할수있음
+                            // function callback() {
+                            //     console.log('hi');
+                            // }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

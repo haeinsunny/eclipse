@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>public/json.html</title>
+</head>
+
+<body>
+    <script>
+        //json -> obj -> json
+        let obj = {       
+            name: "Hong",
+            age: 10,
+            marriage: true,
+            birth: new Date(),
+            showInfo: function(){
+                return "name: " + this.name + ", age: " + this.age;
+            }
+        }
+        
+        console.log(obj);
+        let json = JSON.stringify(obj, ["name", "age"]);  //obj타입을 json으로 바꿔주겠다
+        // console.log(json);
+        obj = JSON.parse(json, (k, v)=>{  //json가져와서 함수로 하나하나 반환하겠다 key, value
+            return (k == "birth")? new Date(v) : v;  //json을 obj 타입으로 바꾸겠다
+        });  //밑에꺼 람다식표현
+
+        // obj = JSON.parse(json, function(k, v){  //json가져와서 함수로 하나하나 반환하겠다 key, value
+        //     console.log(k, v);
+        //     // let result = (k == "name")? "hwang" : v;  //key값이 name이면 hwang을 반환하고 아니면 value값 반환
+        //     let result = (k == "birth")? new Date(v) : v;
+        //     return result;
+        // });
+        // console.log(obj);
+    </script>
+</body>
+
+</html>

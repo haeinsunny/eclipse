@@ -4,7 +4,60 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>empInfo.jsp</title>
+<title>jquery_empinfo.jsp</title>
+<script src="public/jquery-3.5.1.min.js"></script>
+
+<script>
+<%
+String empId = request.getParameter("id");
+%>
+
+ $(document).ready(function(){
+	$.ajax({
+		url : 'GetEmpInfoServlet?id=<%=empId%>',
+		success: function(result){
+		let data = result;
+		let eid = $('#eid').val(data.id);
+		let fName =$('#fName').val(data.firstName);
+		let lName =$('#lName').val(data.lastName);
+		let email =$('#email').val(data.email);
+		let salary =$('#salary').val(data.salary);
+		let job =$('#job').val(data.jobId);		
+		},
+		error: function(reject){
+			console.log(new Error("실행 중 에러 발생"));
+		},
+		dataType: 'json'
+	});	
+	let btn = $('#changeBtn');
+	$(btn).on('click', myChangeFunc);		
+});
+ 
+ function myChangeFunc() {			
+	 $.ajax({
+			url : 'PutEmpInfoServlet?',
+			success: function(result){
+				let data = result;
+				let eid = $('#eid').val(data.id);
+				let fName =$('#fName').val(data.firstName);
+				let salary =$('#salary').val(data.salary);
+				let job =$('#job').val(data.jobId);		
+				},
+			data:{
+				id:eid, 
+	 			firstName:fName,
+	 			lastName:lName,
+	 			salary:salary,
+	 			jobId:job
+			},
+	        error: function(reject){
+			   console.log(new Error("실행 중 에러 발생"));
+		},
+		dataType: 'json'
+	});	
+ }
+</script>
+
 <style type="text/css">
 div#detail {
 	height: 270px;
@@ -44,9 +97,7 @@ div#detail>select {
 </style>
 </head>
 <body>
-	<%
-		String empId = request.getParameter("id");
-	%>
+	
 	<h1>
 		아이디:
 		<%=empId%></h1>
@@ -74,52 +125,8 @@ div#detail>select {
 		</select><br>
 
 		<button id="changeBtn">OK</button>
-
 	</div>
-
-	<script>
-       let xhtp = new XMLHttpRequest();	
-       xhtp.onreadystatechange = function (){
-	    if(xhtp.readyState ==4 && xhtp.status == 200){
-	   console.log(xhtp.responseText);	
-	   let data = JSON.parse(xhtp.responseText);  //자바스크립트 오브젝트 파일로 변경(json->자바스크립트 오브젝트)
-	   console.log(data.id, data.firstName, data.lastName, data.jobId);  //변수이름으로 가져오게끔	
-       document.getElementById('eid').value = data.id;
-       document.getElementById('fName').value = data.firstName;
-       document.getElementById('lName').value = data.lastName;
-       document.getElementById('salary').value = data.salary;
-       document.getElementById('job').value = data.jobId;
-      
-	    }
 	
-    }
-        xhtp.open('get', 'GetEmpInfoServlet?id=<%=empId%>');
-		xhtp.send();
-
-		//버튼에 이벤트 등록
-		let btn = document.getElementById('changeBtn');
-		btn.addEventListener('click', myChangeFunc);
-
-		//버튼이벤트 콜백함수
-		function myChangeFunc() {
-			let eid = document.getElementById('eid').value; //값들을 파라미터로 넘기는 작업
-			let fName = document.getElementById('fName').value;
-			let lName = document.getElementById('lName').value;
-			let salary = document.getElementById('salary').value;
-			let job = document.getElementById('job').value;
-			let param = 'eid=' + eid + '&fName=' + fName + '&lName=' + lName
-					+ '&salary=' + salary + '&job=' + job;
-			let xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (xhttp.readyState == 4 && xhttp.status == 200) {
-					console.log(xhttp.responseText);
-					//location.href = "index.html";
-				}
-			}
-			xhttp.open('get', 'PutEmpInfoServlet?' + param);
-			xhttp.send();
-		}
-	</script>
 </body>
 </html>
 

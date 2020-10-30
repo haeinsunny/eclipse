@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>public/jquery_input.html</title>
+    <style>
+        input {
+            display: block;
+            font-size: 20px;
+        }
+        table{
+            font-size: 20px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--제이쿼리파일을 저장하지 않고 웹주소로 가져와 사용할수있다-->
+    <script>
+        $(document).ready(function () {
+            $('#ok').on('click', function () {
+                // $('input').eq(0)  이렇게해도되고  
+                let title = $('input[name="title"]').val(); //해당위치에.value(값):값을 넣겠다. value():value를 가져오겠다
+                let content = $('input[name="content"]').val();
+                let writer = $('input[name="writer"]').val();
+
+                // console.log(title, content, writer);
+
+                let list = [title, content, writer];
+                let tr = $("<tr />");
+                for(lis of list){                   
+                    tr.append($('<td/>').html(lis));
+                    }
+                $('#result').append(tr);               
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="input">
+        <input type="text" name="title">
+        <input type="text" name="content">
+        <input type="text" name="writer">
+        <button id="ok">저장</button>
+    </div>
+    <table  id='result' border ="1">
+        <tr>
+            <th>제목</th>
+            <th>내용</th>
+            <th>작성자</th>
+        </tr>
+    </table>
+</body>
+
+</html>
