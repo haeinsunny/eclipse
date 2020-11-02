@@ -4,15 +4,24 @@
 <meta charset="UTF-8">
 <title>datatable/datatable.html</title>
 <script src="../public/jquery-3.5.1.min.js"></script>   
-<script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js">  </script>  
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
-<script src="data.js"></script>
+
 <script>
-$(document).ready(function() {
+$(document).ready(function() {    //API를 활용함. 있는 그대로 가져오기
+	var table = $('#example').DataTable();  // row().remove() API를 활용함 (추가함)
     $('#example').DataTable( {
     	 "processing": true,
          "serverSide": true,
-         "ajax": 'data.js'  //servlet주소
+         "ajax": '../DataTableServletJSON'  //servlet주소. DataTableServlet이 있는 위치 잘 파악해서 DataTableServlet or 지금주소
+    } );
+	
+    $('#example tbody').on( 'click', 'img.icon-delete', function () {  //on: 이벤트 요소 등록할때. click하면 img태그의 icon-delete요소(버튼이미지)를 가져와  func을 실행하겠다.
+      $('#example tbody').on( 'click', 'td', function () {
+    	table
+            .row( $(this).parents('tr') )
+            .remove()   //삭제하고
+            .draw();    //다시 띄움
     } );
 } );
 </script>

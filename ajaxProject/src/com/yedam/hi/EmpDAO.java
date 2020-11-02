@@ -16,6 +16,72 @@ public class EmpDAO {
 	ResultSet rs;
 	Connection conn;
 	
+	public void deleteSchedule(String title, String startDate) {  //DB에도 삭제하는 메소드
+		conn = DBCon.getCon();
+		String sql = "delete from fullcalendar where title=? and substr(start_date,1,10)=?";  //뒤에 시간T부터 붙는거 떼려고 substr씀
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, title);
+			psmt.setString(2, startDate);
+			
+			int r = psmt.executeUpdate(); 
+			System.out.println(r + "건 삭제했드ㅏ....");
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	}
+ 	public void makeSchedule(FullCalendar cal) {   //DB에 값을 넣는 메소드
+		conn = DBCon.getCon();
+		String sql = "insert into fullcalendar values(?, ?, ?)";  
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, cal.getTitle());
+			psmt.setString(2, cal.getStartDate());
+			psmt.setString(3, cal.getEndDate());
+			
+			int r = psmt.executeUpdate(); 
+			System.out.println(r + "건 입력했드ㅏ....");
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public List<FullCalendar> getSchedules(){   //getSchedules(): DB에서 스케줄을 불러와서 FullCalendar List에 담아라.
+		conn = DBCon.getCon();
+		String sql = "select * from fullcalendar";
+		List<FullCalendar> schedules = new ArrayList<>();  //schedules 얘로 반환 해줄거임
+		try {
+			psmt = conn.prepareStatement(sql);   //예외처리하기
+			rs = psmt.executeQuery();
+			while(rs.next()) {
+				FullCalendar cal = new FullCalendar(rs.getString("title"), rs.getString("start_date"), rs.getString("end_date"));  //데이터를 가져와서
+				schedules.add(cal);  //cal에 추가하기
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return schedules;  // 쿼리결과 반환 해 주기(return null이렇게 했다가 schedules로 바꿔주기)
+	}
+	
+	
 	public void updateEmpInfo(String eid, String f, String l, String s, String j) {  //salary update하는것
 		conn = DBCon.getCon();
 		String sql = "update employees set salary=?, job_id=? where employee_id =?";
