@@ -1,11 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>  <!-- index.html save_as하고나서 구문추가해주기1 -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
- <script>
-      let category ="";
-      let itemNo = "";
- </script>
+
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -21,6 +20,12 @@
 
 <!-- Custom styles for this template -->
 <link href="css/shop-homepage.css" rel="stylesheet">
+<%
+String category = request.getParameter("category");  
+%>  <!-- 추가해주기2 -->
+ <script>
+      let category ="<%=category%>";
+ </script>
 
 </head>
 
@@ -37,8 +42,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><!-- 진한 글씨가 빠지면서 클릭한 클래스에 이벤트 적용됨 -->
-					<a class="nav-link" href="#">Home
+					<li class="nav-item active"><a class="nav-link" href="#">Home
 							<span class="sr-only">(current)</span>
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">About</a></li>
@@ -128,7 +132,6 @@
 	<script src="vendor/jquery/jquery.min.js"></script>
 	<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 	<script src="product.js"></script>
-	<!-- <script src="product.js?v=<%=System.currentTimeMillis() %>"></script> -->
 </body>
 
 </html>

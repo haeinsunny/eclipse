@@ -126,7 +126,7 @@ public class EmpDAO {
 		return MemberPerDept; // return 값 줘야 호출하는데서 오류 안남
 	}
 
-	public Employee getEmpInfo(String empId) {
+	public Employee getEmpInfo(String empId) {  //한건 조회..?
 		conn = DBCon.getCon(); // 계속 연결시도하면 오라클 리스너가 접속할 여유를 안줌
 		Employee emp = new Employee();
 		try {

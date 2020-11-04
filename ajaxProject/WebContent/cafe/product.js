@@ -5,15 +5,21 @@
 $.ajax({
 	url: '../GetProdListServlet',
 	dataType: 'json',
+	data:{'category':category},
 	success: function (result) {
-		console.log(result);
-		
+		console.log(category);  		
 		for(obj of result){  //결과 data만큼 createRow 형식을 만든다
 			createRow(obj);
 		}
 	}
 
 });
+
+
+
+
+
+
 //html 중에 얘를 제이쿼리로 만들기
 /* <div class="col-lg-4 col-md-6 mb-4">
 						<div class="card h-100">
@@ -37,11 +43,11 @@ $.ajax({
 function createRow(obj){
 	let div1 = $('<div />').attr('class', 'col-lg-4 col-md-6 mb-4');
 	let div2 = $('<div />').attr('class', 'card h-100');
-	let a = $('<a />').attr('href', '#');  //div2 하위의 a라는 뜻으로 네이밍
-	let img = $('<img />').attr({'class':'card-img-top', 'src':'../images/coffee.jpg', 'alt':''})  //보여줄 이미지가 없을때 alt속성이 보여진다
+	let a = $('<a />').attr('href', 'GetProd.jsp?itemNo='+ obj.itemNo);  //div2 하위의 a라는 뜻으로 네이밍
+	let img = $('<img />').attr({'class':'card-img-top', 'src':'../images/'+obj.itemImg});  //보여줄 이미지가 없을때 alt속성이 보여진다
 	let div2_div = $('<div />').attr('class', 'card-body');
 	let h4 = $('<h4 />').attr('class', 'card-title');
-	let h4_a = $('<a />').attr('href', '#').html(obj.itemName); //각 이름에 맞는 데이터를 가져옴
+	let h4_a = $('<a />').attr('href', 'GetProd.jsp?itemNo='+ obj.itemNo).html(obj.itemName); //각 이름에 맞는 데이터를 가져옴
 
 	let price = new Intl.NumberFormat('ko-KR', {style:'currency', currency:'KRW'}).format(obj.price);  //원화로 바꾸기(넘버포맷 구글서치)
 
@@ -79,5 +85,19 @@ function createRow(obj){
 	div1.append(div2);
 	div2.append(a, div2_div, div2_div2);
 	$('#data').append(div1);
+	
+ let aTag = $('#navbarResponsive a');
+ 	aTag.on('click', function(){
+ 		$('#navbarResponsive>ul>li').removeClass('active');
+ 		$(this).parent().addClass('active');
+})
 
 }
+
+
+
+ 	
+	
+
+	
+
