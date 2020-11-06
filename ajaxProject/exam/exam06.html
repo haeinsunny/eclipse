@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>exam06.html</title>
+</head>
+<script>
+    let xhtp = new XMLHttpRequest();
+
+    xhtp.onreadystatechange = function () { 
+        if (xhtp.readyState == 4 && xhtp.status == 200) { 
+            let data = (xhtp.responseXML); 
+            // console.log(data);
+            data = data.getElementsByTagName('record'); 
+            loadXml(data); 
+        }
+    }
+    xhtp.open('get', 'employees.xml'); 
+    xhtp.send();
+
+
+    function loadXml(data) {
+
+        //list, td구현   
+        for (let i = 0; i < data.length; i++) {
+            let id = data[i].children[0].firstChild.nodeValue;
+            let first_name = data[i].children[1].firstChild.nodeValue;
+            let phone = data[i].children[5].firstChild.nodeValue;
+
+            let list = [id, first_name, phone];
+
+            let tr = $('<tr />');
+            for (lis of list) {
+                let td = $('<td />').html(lis);
+                tr.append(td);
+            }
+            $('#tbl').append(tr);
+        }
+    }
+</script>
+
+<body>
+    <div id="show"></div>
+    <table border="1" id="tbl">
+        <tr>
+            <th>사원번호</th>
+            <th>first_name</th>
+            <th>연락처</th>
+        </tr>
+    </table>
+</body>
+
+</html>

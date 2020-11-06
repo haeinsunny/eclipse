@@ -19,7 +19,8 @@
                     let thc = $('<th><input type="checkbox" id="checkAll"></th>');
                     tr.append(thc);
 
-                    for (i in data[0]) { //데이터 th돌리기  in:필드이름을 가져온다                       
+                    //th구현
+                    for (i in data[0]) { //in:필드이름을 가져온다                       
                         let th = $('<th />').html(i);
                         tr.append(th);
                     }
@@ -28,10 +29,12 @@
                     tr.append(thb, thp);
                     $('#tbl').append(tr);
 
+                    //tr, td구현
                     for (dAry of data) {
                         tr = $('<tr />');
                         // let th = $('<th />').html(dAry);
-                        let tdc = $('<td><input type="checkbox" id="mychk" name="chk"></td>');
+                        let tdc = $('<td><input type="checkbox" id="mychk' + dAry.id +
+                            '" class="chk"></td>');
                         tr.append(tdc);
 
                         function getField(obj, field) { //필드이름의 해당 필드값들을 보고자할때
@@ -39,7 +42,6 @@
                         };
 
                         for (d in dAry) {
-
                             let td = $('<td />').html(dAry[d]);
                             td.innerHTML = dAry[d];
                             tr.append(td);
@@ -52,38 +54,57 @@
                         tr.append(tdb, tdp);
                         $('#tbl').append(tr);
 
-                        $('#btn' + dAry.id + '').click(function () { //한건 삭제버튼
+                        //한건 삭제버튼
+                        $('#btn' + dAry.id + '').click(function () {
                             $(this).parent().parent().remove();
                         });
 
-                        $('#BtnAll').click(function () { //전체 삭제버튼
-                            $('.btn').parent().parent()
-                                .remove(); // $('.btn'):클래스값으로 지정하면 한번에 인식 가능
-                        });
-
-                        $('#sBtn').click(function () { //선택삭제
+                        //선택삭제
+                        $('#sBtn').click(function () {
                             $('#mychk:checked').parent().parent().remove();
 
                         });
-                        //clone()함수: 복사하기    
+                        //복사버튼     
                         $('#copy' + dAry.id + '').click(function () { //id는 유니크한 값으로 지정해야 각각인식됨
                             //  console.log($(this).parent().parent());
-                            $($(this).parent().parent()).after($(this).parent().parent().clone(true)); //clone() 디폴트: false인데 얘는 값만 복사(true는 요소까지)
+                            $($(this).parent().parent()).after($(this).parent()
+                                .parent() //clone()함수: 하기
+                                .clone(true)); //clone() 디폴트: false인데 얘는 값만 복사(true는 요소까지)
                         }) //$(this).parent().parent():dAry모든배열, after($(this): 현재위치 바로뒤에  
 
-                        $('#Copy').click(function () {   //전체복사          
-                            $($(this).parent().parent()).after($(this).parent().parent().clone(true));
+                        //전체체크박스
+                        $("#checkAll").click(function () {
+                            if ($("#checkAll").prop("checked")) {
+                                $(".chk").prop("checked", true);
+                            } else {
+                                $(".chk").prop("checked", false);
+                            }
                         });
 
-                        $("#checkAll").click(function () { //전체 체크박스
-                            if ($("#checkAll").prop("checked")) {
-                                $("input[id=mychk]").prop("checked", true);
-                            } else {
-                                $("input[id=mychk]").prop("checked", false);
+                        //전체체크박스 유동
+                    $('#mychk' + dAry.id + '').click(function () {
+                            for (dAry of data) {
+                            if ($('#mychk' + dAry.id + '').prop('checked')) {
+                                $("#checkAll").prop("checked", false);      
                             }
-                            console.log($("input[id=mychk]"));
+                            if()
+                            }
                         });
-                    }
+
+                    };
+
+                    //전체삭제버튼
+                    $('#BtnAll').click(function () {
+                        $('.btn').parent().parent()
+                            .remove(); // $('.btn'):클래스값으로 지정하면 한번에 인식 가능
+                    });
+
+                    //전체복사버튼
+                    $('#Copy').click(function () {
+                        let copy = $('.copy').parent().parent().clone(true);
+                        let paste = $(this).parent().parent().parent();
+                        paste.append(copy); //after, append 차이
+                    });
                 },
                 error: function (reject) {
                     console.log(new Error("실행 중 에러발생"));

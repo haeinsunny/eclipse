@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam04.html</title>
+    <style>
+        input {
+            display: block;
+            font-size: 20px;
+        }
+
+        table {
+            font-size: 20px;
+        }
+
+        button {
+            font-size: 15px;
+            margin: 10px;
+        }
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ok').on('click', function () {
+                let name = $('input[name="name"]').val();
+                let age = $('input[name="age"]').val();
+                let phone = $('input[name="phone"]').val();
+
+                let list = [name, age, phone];
+                let tr = $("<tr />");
+                for (lis of list) {
+                    tr.append($('<td/>').html(lis));
+                }
+                console.log(list);
+                $('#result').append(tr);
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="input">
+        <h3>이름, 나이, 전화번호를 등록하세요.</h3>
+        <label for="name">이름:</label>
+        <input type="text" name="name">
+
+        <label for="name">나이:</label>
+        <input type="text" name="age">
+
+        <label for="name">전화번호:</label>
+        <input type="text" name="phone">
+
+        <button id="ok">등록</button>
+    </div>
+    <table id='result' border="1">
+        <tr>
+            <th>이름</th>
+            <th>나이</th>
+            <th>전화번호</th>
+        </tr>
+    </table>
+</body>
+
+</html>

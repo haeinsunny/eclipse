@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>grep.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () {
+            $('#gender').on('change', function () { //on 'change':에 체인지가 발생하면  함수를 실행해라
+                $.ajax({
+                    url: 'members.json',
+                    dataType: 'json',
+                    success: loadData
+                });
+
+                function loadData(result) {
+                    let gender = $('#gender').val();
+                    let data = $.grep(result, (val, idx) => { //100건 중에 10건만 뽑기 & 여자인 사람
+                        return idx >= 90 && val.gender == gender;
+                    }).map((val, idx) => { //가지고 온 요소들 중에서 또 뽑으려고 할때
+                        return val.first_name + ', ' + val.gender;
+                    });
+                    $('#show').empty(); //원하는 요소를 데려오기전에 비우기
+                    $.each(data, function (idx, val) { //data개수만큼 function을 실행해라
+                        $('#show').append($('<p />').html(val));
+                    });
+                }
+
+                // function loadData(result) {
+                //     console.log(result);
+                //     let data = $.grep(result, (val, idx) => { //100건 중에 10건만 뽑기 & 여자인 사람
+                //         return idx >= 90 && val.gender == 'Female';
+                //     }).map((val, idx) => { //가지고 온 요소들 중에서 또 뽑으려고 할때
+                //         return val.first_name;
+                //     });
+                //     console.log(data);
+                // }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <select name="" id="gender">
+        <option value="Female">여성</option>
+        <option value="Male">남성</option>
+    </select>
+    <div id="show"></div>
+</body>
+
+</html>

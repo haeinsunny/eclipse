@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam05.html</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: "members.json",
+                dataType: 'json',
+                success: function (members) {
+                    let mAry = [];
+
+                    //th구현
+                    let tr = $('<tr />');
+                    for (i in members[0]) {                      
+                        let th = $('<th />').html(i);
+                        tr.append(th);
+                    }
+                    $('#tbl').append(tr);
+
+                    //tr, td구현
+                    for (mAry of members) {
+                        tr = $('<tr />');
+
+                        function getField(obj, field) { 
+                            return obj[field]
+                        };
+                        for (m in mAry) {
+                            let td = $('<td />').html(mAry[m]);
+                            td.innerHTML = mAry[m];
+                            tr.append(td);
+                        }
+                        console.log();
+                        $('#tbl').append(tr);
+                    }
+                },
+                error: function (reject) {
+                    console.log(new Error("실행 중 에러발생"));
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div id="select">
+        <table border="1" id="tbl"></table>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>select.html</title>
+    <script src="jquery-3.5.1.min.js"></script>
+   
+</head>
+
+<body>
+    <select id="plus" size="10">
+        <option class="opt">option1</option>
+        <option class="opt">option2</option>
+        <option class="opt">option3</option>
+        <option class="opt">option4</option>
+        <option class="opt">option5</option>
+    </select>
+    <button id="ltr">+</button>
+    <button id="rtl">-</button>
+    <select id="minus" size="10">
+        <option class="opt">option6</option>
+        <option class="opt">option7</option>
+        <option class="opt">option8</option>
+        <option class="opt">option9</option>
+        <option class="opt">option10</option>
+    </select>  
+    
+    <script>
+        $('#ltr').click(function(){
+            console.log(this);
+            $('#minus option:selected').each(function(){         
+                $(this).remove().appendTo($('#plus'));
+            });
+        });
+        $('#rtl').click(function(){
+            console.log(this);
+            $('#plus option:selected').each(function(){         
+                $(this).remove().appendTo('#minus');
+            });
+        });
+  
+    </script>
+</body>
+</html>

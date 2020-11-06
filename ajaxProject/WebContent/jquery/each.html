@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>each.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(function () {
+            let members = [10, 20, 30, 44, 55];
+            let sum = 0;
+            let ul = $('<ul />');
+
+            $.each(members, function (idx, value) { //메소드임 (매개값)으로 컬렉션(배열)과 콜백함수가 오면 됨 
+                //each: members의 개수만큼, 함수가 실행됨              
+                let li = $('<li />').html(value);
+                ul.append(li);
+                $('#show').append(ul);
+            });
+        });
+
+        $(function () {
+            let members = [{
+                name: "Hong",
+                age: 20
+            }, {
+                name: "Hwang",
+                age: 22
+            }, {
+                name: "Park",
+                age: 25
+            }, {
+                name: "Lee",
+                age: 28
+            }];
+            let sum = 0;
+            let ul = $('<ul />');
+
+            $.each(members, function (idx, value) { //메소드임 (매개값)으로 컬렉션(배열)과 콜백함수가 오면 됨 
+                //each: members의 개수만큼, 함수가 실행됨 (반복적으로 실행하는문. 딱히 리턴값이 없음)      
+                // let li = $('<li />').html(value.name);
+                let li = $('<li />').html(value.name + ', ' + value.age);
+                ul.append(li);
+                $('#show').append(ul);
+            });
+
+            console.clear;
+
+            // $.map(members, function(a, b){  //이렇게 하고 찍어보면 매개값 자리에 뭐가들어가는지 알수있음
+            //     console.log(a, b);  //map은 (value, idx)순서로 반환됨. 이용해서 사용
+            // });
+            let names = $.map(members, function (val, idx) {   //map:원하는 값만 뜯어와서 리턴해줌
+                // return val.name;
+                return val.age > 25? val.name : null; //나이가 25보다 큰 사람을 리턴해라, name val값이null이면 리턴 놉
+            });
+            console.log(names.join('-'));  //join쓰면 값만 돌려줌?
+
+            names = $.grep(members, function (val, idx) {
+                return idx > 0;
+            }).map((val, idx) =>{
+                return val.name;
+            })
+            console.log(names);
+            
+            $('ul>li').each((idx, val)=>{  //('ul>li')를 각각 idx와 val로 보겠다
+                console.log(val);
+                if(idx == 1){
+                    $(val).css('background', 'orange');  //만든 엘리먼트를 선택해와서 css가능
+                }
+
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>
