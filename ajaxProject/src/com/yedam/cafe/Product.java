@@ -1,4 +1,4 @@
-package cafe;
+package com.yedam.cafe;
 
 public class Product { // 디비 테이블 보고 치면됨
 	private String itemNo;

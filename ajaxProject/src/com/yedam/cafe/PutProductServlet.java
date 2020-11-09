@@ -1,4 +1,4 @@
-package cafe;
+package com.yedam.cafe;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package cafe;
+package com.yedam.cafe;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
