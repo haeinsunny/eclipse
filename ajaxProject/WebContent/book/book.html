@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>book.html</title>
+    <script src="../js/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '../GetBookServlet', //=status 200과 같은말(이 페이지를 요청하고)  //url: 불러올 servlet페이지
+                data: {
+                    cmd: 'selectAll'
+                },
+                dataType: 'json',
+                success: loadBookData,
+                error: function () {}
+            });
+
+            function loadBookData(data) {
+                let dAry = [];
+                console.log(data);
+
+                //th구현
+                let tr = $('<tr />');
+
+                for (i in data[0]) { //in:필드이름을 가져온다                       
+                    let th = $('<th />').html(i);
+                    tr.append(th);
+                }
+                let thb = $('<th>수정</th>');
+                let thp = $('<th>삭제</th>');
+                tr.append(thb, thp);
+                $('#tbl').append(tr);
+
+                //tr, td구현
+                for (dAry of data) {
+                    tr = $('<tr />');
+
+                    function getField(obj, field) { //필드이름의 해당 필드값들을 보고자할때
+                        return obj[field]
+                    };
+
+                    for (d in dAry) {
+                        let td = $('<td />').html(dAry[d]);
+                        td.innerHTML = dAry[d];
+                        tr.append(td);
+                    }
+
+                    let tdb = $('<td><input type="button" id="up' + dAry.bookNo + '" value="수정" ></td>');
+                    let tdp = $('<td><input type="button" id="del' + dAry.bookNo + '" value="삭제"></td>');
+
+                    tr.append(tdb, tdp);
+
+                    $('#tbl').append(tr);
+
+                    //삭제버튼
+                    $('#del' + dAry.bookNo + '').click(function () {
+                        console.log( dAry.bookNo );
+                        let id = dAry.bookNo;
+                        $.ajax({
+                            url: '../GetBookServlet',
+                            data: {
+                                cmd: 'delete',
+                                id:id
+                            },
+                            success: $(this).parent().parent().remove(),
+                            error: function () {}
+                        });
+                        alert('[' + id + ']번 삭제완료!!!');
+                    });
+                }
+            }
+
+            //등록버튼
+            $('#addBook').click(function () {
+                let title = document.addForm.title.value;
+                let author = document.addForm.author.value;
+                let price = document.addForm.price.value;
+
+                $.ajax({
+                    url: '../GetBookServlet',
+                    data: {
+                        cmd: 'insert',
+                        title: title,
+                        author: author,
+                        price: price
+                    },
+                    success: addResult,
+                    error: function () {}
+                });
+
+
+                //글 등록 콜백함수
+                function addResult(res) {
+                    console.log(res);
+                    let tr = $('<tr />');
+                    let td = $('<td />').html(res);
+                    let td1 = $('<td />').html(title);
+                    let td2 = $('<td />').html(author);
+                    let td3 = $('<td />').html(price);
+
+                    tr.append(td, td3, td2, td1);
+
+                    let tdb1 = $('<td><input type="button" id="up' + res + '" value = "수정" ></td>');
+                    let tdp1 = $('<td><input type="button" id="del' + res + '" value= "삭제"></td>');
+
+                    tr.append(tdb1, tdp1);
+                    $('#tbl').append(tr);
+
+                    //등록폼 화면 clear
+
+                    document.addForm.title.value = '';
+                    document.addForm.author.value = '';
+                    document.addForm.price.value = '';
+                    alert('[' + title + '] 등록완료!!!');
+
+                }
+
+
+            });
+
+        })
+    </script>
+</head>
+
+<body>
+
+    <body>
+        <h3>책 리스트</h3>
+        <table border="1" id="tbl"></table>
+        <br>
+        </div>
+
+        <!--등록화면-->
+        <div id="BookAdd" style="display: block;">
+            <h5>등록건을 입력하세요.</h5>
+            <form action="" name="addForm">
+                <input type="hidden" name="no" value=""> 제목: <input type="text" id="title" name="title" size="10"> <br>
+                저자:
+                <input type="text" id="author" name="author" size="10"> <br>
+                가격: <input type="number" id="price" name="price" size="10"> <input type="button" value="등록"
+                    id="addBook">
+            </form>
+            <br>
+        </div>
+        <!-- 수정화면 -->
+        <div id="commentUpdate" style="display: none;">
+            <h5>수정건을 입력하세요.</h5>
+            <form action="" name="updateForm">
+                <input type="hidden" name="id" value=""> 이름: <input type="text" name="name" size="10"><br> 내용:
+                <textarea name="content" id="" cols="20" rows="2"></textarea>
+                <br> <input type="button" value="변경" onclick="updateBook()">
+                <input type="button" value="취소" onclick="cancelUpdate()">
+            </form>
+        </div>
+    </body>
+
+</html>
