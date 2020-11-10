@@ -55,22 +55,66 @@
 
                     $('#tbl').append(tr);
 
-                    //삭제버튼
-                    $('#del' + dAry.bookNo + '').click(function () {
-                        console.log( dAry.bookNo );
-                        let id = dAry.bookNo;
+                    //수정버튼
+                    $('#up' + dAry.bookNo + '').click(function () {
+                        let update = document.getElementById('bookUpdate');
+                        update.style.display = 'block';
+                    });
+
+                    //수정>변경버튼
+                    $('#update').click(function () {
+                        let title = document.addForm.title.value;
+                        let author = document.addForm.author.value;
+                        let price = document.addForm.price.value;
+
                         $.ajax({
                             url: '../GetBookServlet',
                             data: {
-                                cmd: 'delete',
-                                id:id
+                                cmd: 'insert',
+                                title: title,
+                                author: author,
+                                price: price
                             },
-                            success: $(this).parent().parent().remove(),
+                            success: upResult,
                             error: function () {}
                         });
-                        alert('[' + id + ']번 삭제완료!!!');
-                    });
+
+                    })
+
+                    // function upResult(res) {
+                    //     console.log(res);
+
+                    //     title = document.updateForm.title.value;
+                    //     author = document.updateForm.author.value;
+                    //     price = document.updateForm.price.value;
+
+                    //     //수정폼 화면 clear
+                    //     document.updateForm.title.value = '';
+                    //     document.updateForm.author.value = '';
+                    //     document.updateForm.price.value = '';
+                    //     alert('[' + title + '] 수정완료!!!');
+
+                    // }
+
                 }
+
+
+                //삭제버튼
+                $('#del' + dAry.bookNo + '').click(function () {
+                    console.log(dAry.bookNo);
+                    let id = dAry.bookNo;
+                    $.ajax({
+                        url: '../GetBookServlet',
+                        data: {
+                            cmd: 'delete',
+                            id: id
+                        },
+                        success: $(this).parent().parent().remove(),
+                        error: function () {}
+                    });
+                    alert('[' + id + ']번 삭제완료!!!');
+                });
+
             }
 
             //등록버튼
@@ -110,7 +154,6 @@
                     $('#tbl').append(tr);
 
                     //등록폼 화면 clear
-
                     document.addForm.title.value = '';
                     document.addForm.author.value = '';
                     document.addForm.price.value = '';
@@ -118,10 +161,9 @@
 
                 }
 
-
             });
 
-        })
+        });
     </script>
 </head>
 
@@ -137,21 +179,23 @@
         <div id="BookAdd" style="display: block;">
             <h5>등록건을 입력하세요.</h5>
             <form action="" name="addForm">
-                <input type="hidden" name="no" value=""> 제목: <input type="text" id="title" name="title" size="10"> <br>
-                저자:
-                <input type="text" id="author" name="author" size="10"> <br>
+                <input type="hidden" name="no" value="">
+                제목: <input type="text" id="title" name="title" size="10"> <br>
+                저자: <input type="text" id="author" name="author" size="10"> <br>
                 가격: <input type="number" id="price" name="price" size="10"> <input type="button" value="등록"
                     id="addBook">
             </form>
             <br>
         </div>
         <!-- 수정화면 -->
-        <div id="commentUpdate" style="display: none;">
+        <div id="bookUpdate" style="display: none;">
             <h5>수정건을 입력하세요.</h5>
             <form action="" name="updateForm">
-                <input type="hidden" name="id" value=""> 이름: <input type="text" name="name" size="10"><br> 내용:
-                <textarea name="content" id="" cols="20" rows="2"></textarea>
-                <br> <input type="button" value="변경" onclick="updateBook()">
+                <input type="hidden" name="id" value="">
+                제목: <input type="text" id="upTitle" size="10"> <br>
+                저자: <input type="text" id="upAuthor" size="10"> <br>
+                가격: <input type="number" id="upPrice" size="10"> <br>
+                <input type="button" value="변경" onclick="updateBook()">
                 <input type="button" value="취소" onclick="cancelUpdate()">
             </form>
         </div>
