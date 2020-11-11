@@ -8,114 +8,49 @@
     <script src="../js/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function () {
-            $.ajax({
-                url: '../GetBookServlet', //=status 200과 같은말(이 페이지를 요청하고)  //url: 불러올 servlet페이지
-                data: {
-                    cmd: 'selectAll'
-                },
-                dataType: 'json',
-                success: loadBookData,
-                error: function () {}
-            });
-
-            function loadBookData(data) {
-                let dAry = [];
-                console.log(data);
-
-                //th구현
-                let tr = $('<tr />');
-
-                for (i in data[0]) { //in:필드이름을 가져온다                       
-                    let th = $('<th />').html(i);
-                    tr.append(th);
-                }
-                let thb = $('<th>수정</th>');
-                let thp = $('<th>삭제</th>');
-                tr.append(thb, thp);
-                $('#tbl').append(tr);
-
-                //tr, td구현
-                for (dAry of data) {
-                    tr = $('<tr />');
-
-                    function getField(obj, field) { //필드이름의 해당 필드값들을 보고자할때
-                        return obj[field]
-                    };
-
-                    for (d in dAry) {
-                        let td = $('<td />').html(dAry[d]);
-                        td.innerHTML = dAry[d];
-                        tr.append(td);
-                    }
-
-                    let tdb = $('<td><input type="button" id="up' + dAry.bookNo + '" value="수정" ></td>');
-                    let tdp = $('<td><input type="button" id="del' + dAry.bookNo + '" value="삭제"></td>');
-
-                    tr.append(tdb, tdp);
-
-                    $('#tbl').append(tr);
-
-                    //수정버튼
-                    $('#up' + dAry.bookNo + '').click(function () {
-                        let update = document.getElementById('bookUpdate');
-                        update.style.display = 'block';
-                    });
-
-                    //수정>변경버튼
-                    $('#update').click(function () {
-                        let title = document.addForm.title.value;
-                        let author = document.addForm.author.value;
-                        let price = document.addForm.price.value;
-
-                        $.ajax({
-                            url: '../GetBookServlet',
-                            data: {
-                                cmd: 'insert',
-                                title: title,
-                                author: author,
-                                price: price
-                            },
-                            success: upResult,
-                            error: function () {}
-                        });
-
-                    })
-
-                    // function upResult(res) {
-                    //     console.log(res);
-
-                    //     title = document.updateForm.title.value;
-                    //     author = document.updateForm.author.value;
-                    //     price = document.updateForm.price.value;
-
-                    //     //수정폼 화면 clear
-                    //     document.updateForm.title.value = '';
-                    //     document.updateForm.author.value = '';
-                    //     document.updateForm.price.value = '';
-                    //     alert('[' + title + '] 수정완료!!!');
-
-                    // }
-
-                }
-
-
-                //삭제버튼
-                $('#del' + dAry.bookNo + '').click(function () {
-                    console.log(dAry.bookNo);
-                    let id = dAry.bookNo;
-                    $.ajax({
-                        url: '../GetBookServlet',
-                        data: {
-                            cmd: 'delete',
-                            id: id
-                        },
-                        success: $(this).parent().parent().remove(),
-                        error: function () {}
-                    });
-                    alert('[' + id + ']번 삭제완료!!!');
+            //수정 > 변경버튼
+            $('#updateBook').click(function () {
+                let title = $('#upTitle').val();
+                let author = $('#upAuthor').val();
+                let price = $('#upPrice').val();
+                let id = $('#upId').val()
+                $.ajax({
+                    url: '../GetBookServlet',
+                    data: {
+                        cmd: 'update',
+                        title: title,
+                        author: author,
+                        price: price,
+                        id: id
+                    },
+                    success: upResult,
+                    error: function () {}
                 });
 
-            }
+                function upResult(res) {
+                    console.log(res);
+                    let list = document.getElementById(id);
+                    list.childNodes[3].innerHTML = title;
+                    list.childNodes[2].innerHTML = author;
+                    list.childNodes[1].innerHTML = price;
+
+                    alert('[' + id + ']번 수정완료!!!');
+
+                    //수정폼 화면 none
+                    let update = document.getElementById('bookUpdate');
+                    update.style.display = 'none';
+
+                    //list(tr)에 담아서 바로 수정, 삭제 실행가능        
+                    title = list.childNodes[3].innerHTML;
+                    author = list.childNodes[2].innerHTML;
+                    price = list.childNodes[1].innerHTML
+                }
+            })
+
+            $('#cancelUpdate').click(function () {
+                let update = document.getElementById('bookUpdate');
+                update.style.display = 'none';
+            })
 
             //등록버튼
             $('#addBook').click(function () {
@@ -163,6 +98,92 @@
 
             });
 
+            $.ajax({
+                url: '../GetBookServlet', //=status 200과 같은말(이 페이지를 요청하고)  //url: 불러올 servlet페이지
+                data: {
+                    cmd: 'selectAll'
+                },
+                dataType: 'json',
+                success: loadBookData,
+                error: function () {}
+            });
+
+            function loadBookData(data) {
+                let dAry = [];
+                console.log(data);
+
+                //th구현
+                let tr = $('<tr />');
+
+                for (i in data[0]) { //in:필드이름을 가져온다                       
+                    let th = $('<th />').html(i);
+                    tr.append(th);
+                }
+                let thb = $('<th>수정</th>');
+                let thp = $('<th>삭제</th>');
+                tr.append(thb, thp);
+                $('#tbl').append(tr);
+
+                //tr, td구현
+                for (dAry of data) {
+                    tr = $('<tr />');
+
+                    function getField(obj, field) { //필드이름의 해당 필드값들을 보고자할때
+                        return obj[field]
+                    };
+
+                    for (d in dAry) {
+                        let td = $('<td />').html(dAry[d]);
+
+                        tr.append(td);
+                        tr.attr('id', '' + dAry.bookNo + '');
+                    }
+
+                    let tdb = $('<td><input type="button" id="up' + dAry.bookNo + '" value="수정" ></td>');
+                    let tdp = $('<td><input type="button" id="del' + dAry.bookNo + '" value="삭제"></td>');
+
+                    tr.append(tdb, tdp);
+
+                    $('#tbl').append(tr);
+
+                    //수정버튼
+                    let numb = dAry.bookNo;
+                    $('#up' + numb).click(function () {
+                        let list = document.getElementById(numb);
+                        console.log(list);
+                        console.log(list.childNodes[0].innerHTML);
+
+                        let update = document.getElementById('bookUpdate');
+                        update.style.display = 'block';
+
+                        updateForm.upTitle.value = list.childNodes[3].innerHTML;
+                        updateForm.upAuthor.value = list.childNodes[2].innerHTML;
+                        updateForm.upPrice.value = list.childNodes[1].innerHTML;
+                        updateForm.upId.value = list.childNodes[0].innerHTML;
+
+
+                    });
+
+                    //삭제버튼
+                    $('#del' + dAry.bookNo + '').click(function () {
+                        console.log(dAry.bookNo);
+                        let id = dAry.bookNo;
+                        $.ajax({
+                            url: '../GetBookServlet',
+                            data: {
+                                cmd: 'delete',
+                                id: id
+                            },
+                            success: $(this).parent().parent().remove(),
+                            error: function () {}
+                        });
+                        alert('[' + id + ']번 삭제완료!!!');
+                    });
+
+                }
+
+            } //end of loadData
+
         });
     </script>
 </head>
@@ -191,12 +212,12 @@
         <div id="bookUpdate" style="display: none;">
             <h5>수정건을 입력하세요.</h5>
             <form action="" name="updateForm">
-                <input type="hidden" name="id" value="">
-                제목: <input type="text" id="upTitle" size="10"> <br>
-                저자: <input type="text" id="upAuthor" size="10"> <br>
-                가격: <input type="number" id="upPrice" size="10"> <br>
-                <input type="button" value="변경" onclick="updateBook()">
-                <input type="button" value="취소" onclick="cancelUpdate()">
+                <input type="hidden" name="id" id="upId" value="">
+                제목: <input type="text" id="upTitle" size="10" name="uptitle"> <br>
+                저자: <input type="text" id="upAuthor" size="10" name="upAuthor"> <br>
+                가격: <input type="number" id="upPrice" size="10" name="upPrice"> <br>
+                <input type="button" value="변경" id="updateBook">
+                <input type="button" value="취소" id="cancelUpdate">
             </form>
         </div>
     </body>

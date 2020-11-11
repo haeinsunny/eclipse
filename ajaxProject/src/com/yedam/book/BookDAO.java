@@ -16,6 +16,34 @@ public class BookDAO {
 	ResultSet rs;
 	Connection conn;
 	String sql;
+	
+	//DB수정
+	public void updateBook(String title, String author, int price, String id) {
+		conn = DBCon.getCon();		
+		String sql = "update book set book_title=?, book_author=?, book_price=? where book_no=?";
+		try {
+			psmt = conn.prepareStatement(sql);		
+			psmt.setString(1,title);
+			psmt.setString(2, author);
+			psmt.setInt(3, price);
+			psmt.setString(4, id);
+
+			int r = psmt.executeUpdate();
+			System.out.println(r + "건 수정되었습니다.");
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		} finally {
+			try {
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
 
 	// DB삭제
 	public void deleteBook(String id) {
@@ -26,9 +54,9 @@ public class BookDAO {
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, id);
 
-			int r = psmt.executeUpdate();		
+			int r = psmt.executeUpdate();
 			System.out.println(r + "건 삭제되었습니다.");
-			
+
 		} catch (SQLException e) {
 
 			e.printStackTrace();

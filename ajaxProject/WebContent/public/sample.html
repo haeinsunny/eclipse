@@ -82,11 +82,11 @@
                         });
 
                         //전체체크박스 유동
-                    $('#mychk' + dAry.id + '').click(function () {
+                        $('#mychk' + dAry.id + '').click(function () {
                             for (dAry of data) {
-                            if ($('#mychk' + dAry.id + '').prop('checked')) {
-                                $("#checkAll").prop("checked", false);      
-                            }
+                                if ($('#mychk' + dAry.id + '').prop('checked')) {
+                                    $("#checkAll").prop("checked", false);
+                                }
                             }
                         });
 
