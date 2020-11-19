@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>Test</display-name>
+  <!-- this is my configure start 내가 설정할 부분-->
+  
+  <!-- 서블릿 정의와 맵핑이 반드시 한쌍이 되어야한다. -->
+  <servlet><!-- 1. 서블릿 정의: 안에 반드시 서블릿 네임과 이 이름의 실제 클래스를 적어줌 (패키지명을 포함한 풀네임을 쓴다. 확장자명만 제외) -->
+ 	<servlet-name>Hello</servlet-name> <!-- 서블릿명이 Hello라는 서블릿을 만들거다 -->
+  	<servlet-class>co.sunny.first.HelloServlet</servlet-class> <!-- 경로는 여기다 -->
+  </servlet>
+  
+  <servlet-mapping>	<!-- 2. 서블릿 맵핑: 브라우저 창의 url에서 어떻게 들어올건지 (/a라고 치면 해당 서블릿을 찾아가도록)-->
+  	<servlet-name>Hello</servlet-name> <!-- 서블릿명이 위와 반드시 동일 -->
+  	<url-pattern>/a</url-pattern> <!-- 브라우저 상에서 어떤 이름으로 치면 들어올래 -->
+  </servlet-mapping>
+  
+  <!-- this is my configure end 내가 설정할 부분 끝-->
+  <welcome-file-list><!-- 첫번째로 실행할 파일, 안쓰는 부분 지우기 -->
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
