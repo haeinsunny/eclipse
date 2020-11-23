@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="56.0" layoutY="194.0" prefHeight="84.0" prefWidth="368.0" spacing="20.0" AnchorPane.bottomAnchor="16.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="123.0" AnchorPane.topAnchor="330.0">
+         <children>
+            <Button fx:id="close" mnemonicParsing="false" text="종료">
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin></Button>
+            <Button fx:id="insert" mnemonicParsing="false" text="등록">
+               <HBox.margin>
+                  <Insets left="60.0" />
+               </HBox.margin></Button>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="50.0" right="50.0" top="10.0" />
+         </padding>
+      </HBox>
+   </children>
+</AnchorPane>
